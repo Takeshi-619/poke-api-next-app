@@ -1,6 +1,6 @@
 export {};
 
-const fetchUrl = require("isomorphic-unfetch");
+const fetch = require("isomorphic-unfetch");
 
 module.exports = async (
   req: { query: { id: any } },
@@ -13,7 +13,17 @@ module.exports = async (
   }
 ) => {
   const { id } = req.query;
-  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+  if (!id) {
+    res.status(400).json({ error: "Missing ID" });
+    return;
+  }
+
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`);
+  if (!response.ok) {
+    res.status(404).json({ error: "Pokemon not found" });
+    return;
+  }
+
   const data = await response.json();
   res.status(200).json(data);
 };
