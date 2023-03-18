@@ -1,30 +1,66 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useStore from "../store";
 import ReactPaginate from "react-paginate";
 import { useRouter } from "next/router";
-import useSWR from "swr";
+import axios from "axios";
+
+type Poke = {
+  name: string;
+  id: string;
+  image: string;
+  type: string;
+};
 
 const Monster = () => {
-  // const [id, setId] = useState<number>(1);
-  const [name, setName] = useState<string>("");
-  const [imageUrl, setImageUrl] = useState<string>("");
+  const [poke, setPoke] = useState<Poke[]>([]);
+  const [monsterData, setMonsterData] = useState();
 
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setId(Number(event.target.value));
-  // };
+  useEffect(() => {
+    const fetchPokemon = async () => {
+      const promises = [];
+      for (let i = 1; i < 120; i++) {
+        const url = `https:pokeapi.co/api/v2/pokemon/${i}`;
+        promises.push(axios.get(url));
+      }
 
-  for (let i = 1; i <= 10; i++) {
-    const id = i;
-  }
+      const results = await Promise.all(promises);
+      const pokemon = results.map((res) => ({
+        name: res.data.name,
+        id: res.data.id,
+        image: res.data.sprites["front_default"],
+        type: res.data.types
+          .map((type: { type: { name: any } }) => type.type.name)
+          .join(", "),
+      }));
+      setPoke(pokemon);
+    };
+    fetchPokemon();
 
-  async function display(id: number) {
-    const response = await fetch(`/api/pokemon/${id}`);
-    const data = await response.json();
-    setName(data.name);
-    setImageUrl(data.sprites.front_default);
-  }
+    // async function fetchData() {
+    //   try {
+    //     const response = await fetch(`/api/pokemon?pokemonName=${name}`);
+    //     const data = await response.json();
+    //     setMonsterData(data);
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // }
+    // fetchData();
+  }, []);
 
-  return <div></div>;
+  return (
+    <div>
+      {poke.map((items, index) => (
+        // eslint-disable-next-line react/jsx-key
+        <div key={index}>
+          <picture>
+            <img src={items.image} alt="" />
+          </picture>
+          <p>{items.name}</p>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default Monster;
