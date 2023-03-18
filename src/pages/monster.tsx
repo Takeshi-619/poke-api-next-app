@@ -50,6 +50,7 @@ const Monster = () => {
 
   return (
     <div>
+      aaa
       {poke.map((items, index) => (
         // eslint-disable-next-line react/jsx-key
         <div key={index}>
