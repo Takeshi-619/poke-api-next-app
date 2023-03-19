@@ -17,9 +17,11 @@ const Monster = () => {
   const fetchPokemon = async () => {
     const monsterData: any[] = [];
     for (let i = 1; i <= 10; i++) {
-      const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
-      monsterData.push(axios.get(url));
-      console.log(monsterData.push(axios.get(url)));
+      // const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
+      // monsterData.push(axios.get(url));
+      // console.log(monsterData.push(axios.get(url)));
+      const url = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
+      monsterData.push(url);
     }
 
     const results = await Promise.all(monsterData);
