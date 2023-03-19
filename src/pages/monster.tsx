@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
 import useStore from "../store";
 import ReactPaginate from "react-paginate";
 import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 type Poke = {
@@ -16,18 +16,19 @@ const Monster = () => {
 
   useEffect(() => {
     const fetchPokemon = async () => {
-      const promises = [];
+      const monsterData: any[] = [];
       for (let i = 1; i < 10; i++) {
-        const url = `https:pokeapi.co/api/v2/pokemon/${i}`;
-        promises.push(axios.get(url));
+        const url = `/api/pokemon?id=${i}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        monsterData.push(data);
       }
 
-      const results = await Promise.all(promises);
-      const pokemon = results.map((res) => ({
-        name: res.data.name,
-        id: res.data.id,
-        image: res.data.sprites["front_default"],
-        type: res.data.types
+      const pokemon = monsterData.map((res) => ({
+        name: res.name,
+        id: res.id,
+        image: res.sprites["front_default"],
+        type: res.types
           .map((type: { type: { name: any } }) => type.type.name)
           .join(", "),
       }));
