@@ -14,26 +14,27 @@ type Poke = {
 const Monster = () => {
   const [poke, setPoke] = useState<Poke[]>([]);
 
-  useEffect(() => {
-    const fetchPokemon = async () => {
-      const monsterData: any[] = [];
-      for (let i = 1; i < 10; i++) {
-        const url = `/api/pokemon?id=${i}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        monsterData.push(data);
-      }
+  const fetchPokemon = async () => {
+    const monsterData: any[] = [];
+    for (let i = 1; i <= 10; i++) {
+      const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
+      monsterData.push(axios.get(url));
+      console.log(monsterData.push(axios.get(url)));
+    }
 
-      const pokemon = monsterData.map((res) => ({
-        name: res.name,
-        id: res.id,
-        image: res.sprites["front_default"],
-        type: res.types
-          .map((type: { type: { name: any } }) => type.type.name)
-          .join(", "),
-      }));
-      setPoke(pokemon);
-    };
+    const results = await Promise.all(monsterData);
+    const pokemon = results.map((res) => ({
+      name: res.data.name,
+      id: res.data.id,
+      image: res.data.sprites["front_default"],
+      type: res.data.types
+        .map((type: { type: { name: any } }) => type.type.name)
+        .join(", "),
+    }));
+    console.log(pokemon);
+    setPoke(pokemon);
+  };
+  useEffect(() => {
     fetchPokemon();
   }, []);
 
@@ -41,7 +42,6 @@ const Monster = () => {
     <div>
       aaa
       {poke.map((items, index) => (
-        // eslint-disable-next-line react/jsx-key
         <div key={index}>
           <picture>
             <img src={items.image} alt="" />

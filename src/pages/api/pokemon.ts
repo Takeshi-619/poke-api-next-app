@@ -1,16 +1,13 @@
-export default async function handler(
-  req: { query: { id: any } },
-  res: {
-    status: (arg0: number) => {
-      (): any;
-      new (): any;
-      json: { (arg0: any): void; new (): any };
-    };
+import axios from "axios";
+
+export default async function handler(req: any, res: any) {
+  const errorHandler = (error: string) => {
+    console.log(error);
+  };
+  try {
+    const { data } = await axios.get("https://pokeapi.co/api/v2/pokemon");
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({ error: errorHandler("missing") });
   }
-) {
-  const { id } = req.query;
-  const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
-  const response = await fetch(url);
-  const data = await response.json();
-  res.status(200).json(data);
 }
