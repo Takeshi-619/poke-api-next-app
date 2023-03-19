@@ -13,12 +13,11 @@ type Poke = {
 
 const Monster = () => {
   const [poke, setPoke] = useState<Poke[]>([]);
-  const [monsterData, setMonsterData] = useState();
 
   useEffect(() => {
     const fetchPokemon = async () => {
       const promises = [];
-      for (let i = 1; i < 120; i++) {
+      for (let i = 1; i < 10; i++) {
         const url = `https:pokeapi.co/api/v2/pokemon/${i}`;
         promises.push(axios.get(url));
       }
@@ -35,17 +34,6 @@ const Monster = () => {
       setPoke(pokemon);
     };
     fetchPokemon();
-
-    // async function fetchData() {
-    //   try {
-    //     const response = await fetch(`/api/pokemon?pokemonName=${name}`);
-    //     const data = await response.json();
-    //     setMonsterData(data);
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // }
-    // fetchData();
   }, []);
 
   return (
