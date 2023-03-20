@@ -1,0 +1,20 @@
+.btn-content {
+  margin: 0 auto;
+  width: 200px;
+  height: 200px;
+  line-height: 200px;
+  border-radius: 50%;
+  text-align: center;
+  transition: 2s;
+  background: linear-gradient(45deg, #3baee39e, #9844b794, #44ea7694);
+  background-size: 200% 200%; /*サイズを大きくひきのばす*/
+  animation: bggradient 15s ease infinite;
+  a {
+    font-size: 32px;
+    color: #fff;
+    display: block;
+    text-decoration: none;
+    position: relative;
+    transition: 2s;
+  }
+}

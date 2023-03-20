@@ -1,2 +1,11 @@
 @use "../styles/monster";
 @use "../styles/paginate";
+@use "../styles/btn";
+@use "../styles/top";
+
+body {
+  background: #efefbb;
+  background: linear-gradient(to right, #d4d3dd, #efefbb);
+  font-family: "Lato", sans-serif;
+  color: #213547;
+}

@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
-import Link from "next/link";
+import Btn from "@/component/Btn";
 
 const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
@@ -13,8 +13,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <h1>pokemon</h1>
-        <Link href={"./monster"}>monster/page</Link>
+        <section className="top-content">
+          <div>
+            <h1>ポケモン図鑑でパートナーを見つけよう</h1>
+            <Btn href={"/monster"} text="Get Start"></Btn>
+          </div>
+        </section>
       </main>
     </>
   );
