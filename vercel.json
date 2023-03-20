@@ -1,4 +1,3 @@
 {
-  "rewrites": [{ "source": "/:path*", "destination": "/index.html" }],
-  "routes": [{ "src": "/api/pokemon", "dest": "@vercel/node" }]
+  "rewrites": [{ "source": "/api/pokemon", "destination": "@vercel/node" }]
 }
