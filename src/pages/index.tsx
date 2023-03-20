@@ -18,8 +18,6 @@ export default function Home() {
       <main>
         <h1>pokemon</h1>
         <Link href={"./monster"}>monster/page</Link>
-        <div>{count}</div>
-        <button onClick={() => setCount(count + 1)}>+1</button>
       </main>
     </>
   );
