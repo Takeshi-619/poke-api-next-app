@@ -6,7 +6,6 @@ import { useState } from "react";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const [count, setCount] = useState(0);
   return (
     <>
       <Head>
