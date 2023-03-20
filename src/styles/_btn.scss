@@ -9,6 +9,7 @@
   background: linear-gradient(45deg, #3baee39e, #9844b794, #44ea7694);
   background-size: 200% 200%; /*サイズを大きくひきのばす*/
   animation: bggradient 15s ease infinite;
+  filter: drop-shadow(0.5rem 0.5rem 1rem rgba(70, 70, 70, 0.734));
   a {
     font-size: 32px;
     color: #fff;
