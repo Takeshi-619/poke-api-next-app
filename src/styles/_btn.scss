@@ -1,5 +1,8 @@
 .btn-content {
-  margin: 0 auto;
+  position: absolute;
+  z-index: 99;
+  inset: 0;
+  margin: auto;
   width: 200px;
   height: 200px;
   line-height: 200px;

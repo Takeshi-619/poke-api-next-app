@@ -3,10 +3,21 @@
 @use "../styles/btn";
 @use "../styles/top";
 @use "../styles/details";
+@use "../styles/footer";
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  overflow-x: hidden;
+}
 
 body {
   background: #efefbb;
   background: linear-gradient(to right, #d4d3dd, #efefbb);
-  font-family: "Lato", sans-serif;
+  font-family: "DotGothic16";
   color: #213547;
 }

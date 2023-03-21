@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import useStore from "../store";
 import axios from "axios";
 import Btn from "@/component/Btn";
+import { useRouter } from "next/router";
+import { stringify } from "querystring";
 
 type Poke = {
   name: string;
@@ -16,6 +18,10 @@ type Poke = {
 
 const detail = () => {
   const detailId = useStore((state) => state.detailId);
+  const { pkData, setDetail } = useStore((state) => state);
+  const [nextBtn, setNextBtn] = useState();
+  const [backBtn, setBackBtn] = useState();
+  const router = useRouter();
 
   const [poke, setPoke] = useState<Poke[]>([]);
 
@@ -42,9 +48,23 @@ const detail = () => {
     setPoke(pokemon);
   };
 
+  const nextPages = () => {
+    const page = +detailId + 1;
+  };
+
+  const pageHandler = (e: string) => {
+    console.log(e);
+    e === "b"
+      ? console.log("back")
+      : e === "c"
+      ? nextPages()
+      : router.push("/");
+  };
+
   useEffect(() => {
     fetchPokemon();
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       {poke &&
@@ -87,6 +107,27 @@ const detail = () => {
           </div>
         ))}
 
+      <div className="details_footer">
+        <button
+          className="details_footer_topBtn"
+          onClick={(e) => pageHandler(e.currentTarget.value)}>
+          TOP
+        </button>
+        <div className="details_footer_pages">
+          <button
+            className="details_footer_pages_btns"
+            value="b"
+            onClick={(e) => pageHandler(e.currentTarget.value)}>
+            PREV
+          </button>
+          <button
+            className="details_footer_pages_btns"
+            value="c"
+            onClick={(e) => pageHandler(e.currentTarget.value)}>
+            NEXT
+          </button>
+        </div>
+      </div>
       <Btn href={`/monster`} text={"To Back"}></Btn>
     </>
   );

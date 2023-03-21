@@ -8,7 +8,7 @@ type Props = {
 
 function Btn({ href, text }: Props) {
   return (
-    <MouseParallax>
+    <MouseParallax strength={0.2}>
       <div className="btn-content">
         <Link href={href}>{text}</Link>
       </div>
