@@ -66,43 +66,53 @@ const detail = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <>
+    <div className="details">
       {poke &&
         poke.map((i, index) => (
-          <div key={index} className="details">
-            <div className="details_monster">
+          <div key={index} className="details_content">
+            <div className="details_content_monster">
               <picture>
-                <img className="details_monster_image" src={i.image} alt="" />
+                <img
+                  className="details_content_monster_image"
+                  src={i.image}
+                  alt=""
+                />
               </picture>
-              <h3 className="details_monster_name">
+              <h3 className="details_content_monster_name">
                 <span>NO.{detailId}</span>
                 {i.name}
               </h3>
-              <div className="details_monster_info content-flex">
+              <div className="details_content_monster_info content-flex">
                 <h3>Ability</h3>
                 {i.ability}
               </div>
-              <div className="details_monster_info content-flex">
+              <div className="details_content_monster_info content-flex">
                 <h3>Type</h3>
                 {i.type}
               </div>
             </div>
-            <div className="details_stats">
-              <h3>Stats</h3>
-              {i.stats
-                .reduce((pre: any, cur: any, index: any) => {
-                  pre.push({
-                    stat: cur,
-                    num: i.base_stats[index],
-                  });
-                  return pre;
-                }, [])
-                .map((item: any, i: any) => (
-                  <span key={i} className="details_stats_content">
-                    <p className="details_stats_content_first">{item.stat}</p>
-                    <p className="details_stats_content_sec">{item.num}</p>
-                  </span>
-                ))}
+            <div className="details_content_stats">
+              <h3>Stats ＜＜</h3>
+              <div className="details_content_stats_box">
+                {i.stats
+                  .reduce((pre: any, cur: any, index: any) => {
+                    pre.push({
+                      stat: cur,
+                      num: i.base_stats[index],
+                    });
+                    return pre;
+                  }, [])
+                  .map((item: any, i: any) => (
+                    <span key={i} className="details_content_stats_content">
+                      <p className="details_content_stats_content_first">
+                        {item.stat}
+                      </p>
+                      <p className="details_content_stats_content_sec">
+                        {item.num}
+                      </p>
+                    </span>
+                  ))}
+              </div>
             </div>
           </div>
         ))}
@@ -129,7 +139,7 @@ const detail = () => {
         </div>
       </div>
       <Btn href={`/monster`} text={"To Back"}></Btn>
-    </>
+    </div>
   );
 };
 
