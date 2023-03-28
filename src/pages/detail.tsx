@@ -4,7 +4,6 @@ import useStore from "../store";
 import axios from "axios";
 import Btn from "@/component/Btn";
 import { useRouter } from "next/router";
-import { stringify } from "querystring";
 
 type Poke = {
   name: string;
@@ -18,9 +17,7 @@ type Poke = {
 
 const detail = () => {
   const detailId = useStore((state) => state.detailId);
-  const { pkData, setDetail } = useStore((state) => state);
-  const [nextBtn, setNextBtn] = useState();
-  const [backBtn, setBackBtn] = useState();
+  const [pageId, setPageId] = useState(detailId);
   const router = useRouter();
 
   const [poke, setPoke] = useState<Poke[]>([]);
@@ -48,17 +45,61 @@ const detail = () => {
     setPoke(pokemon);
   };
 
-  const nextPages = () => {
-    const page = +detailId + 1;
+  const nextPages = async () => {
+    const page = +pageId + 1;
+    const pages = String(page);
+    setPageId(pages);
+
+    const monsterData = [];
+    const url = `https://pokeapi.co/api/v2/pokemon/${pageId}`;
+    monsterData.push(axios.get(url));
+    console.log(monsterData);
+
+    const results = await Promise.all(monsterData);
+    const pokemon: Poke[] = results.map((res) => ({
+      name: res.data.name,
+      id: res.data.id,
+      image: res.data.sprites["front_default"],
+      stats: res.data.stats.map((item: any) => item.stat.name),
+      base_stats: res.data.stats.map((i: { base_stat: string }) => i.base_stat),
+      ability: res.data.abilities
+        .map((ability: any) => ability.ability.name)
+        .join(", "),
+      type: res.data.types
+        .map((type: { type: { name: string } }) => type.type.name)
+        .join(", "),
+    }));
+    setPoke(pokemon);
+  };
+  const backPages = async () => {
+    const page = +pageId - 1;
+    const pages = String(page);
+    setPageId(pages);
+
+    const monsterData = [];
+    const url = `https://pokeapi.co/api/v2/pokemon/${pageId}`;
+    monsterData.push(axios.get(url));
+
+    const results = await Promise.all(monsterData);
+    const pokemon: Poke[] = results.map((res) => ({
+      name: res.data.name,
+      id: res.data.id,
+      image: res.data.sprites["front_default"],
+      stats: res.data.stats.map((item: any) => item.stat.name),
+      base_stats: res.data.stats.map((i: { base_stat: string }) => i.base_stat),
+      ability: res.data.abilities
+        .map((ability: any) => ability.ability.name)
+        .join(", "),
+      type: res.data.types
+        .map((type: { type: { name: string } }) => type.type.name)
+        .join(", "),
+    }));
+    setPoke(pokemon);
   };
 
   const pageHandler = (e: string) => {
     console.log(e);
-    e === "b"
-      ? console.log("back")
-      : e === "c"
-      ? nextPages()
-      : router.push("/");
+    e === "b" ? backPages() : e === "c" ? nextPages() : router.push("/");
   };
 
   useEffect(() => {
@@ -79,7 +120,7 @@ const detail = () => {
                 />
               </picture>
               <h3 className="details_content_monster_name">
-                <span>NO.{detailId}</span>
+                <span>NO.{i.id}</span>
                 {i.name}
               </h3>
               <div className="details_content_monster_info content-flex">

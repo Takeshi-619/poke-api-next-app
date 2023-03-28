@@ -21,7 +21,6 @@ const Monster = () => {
     for (let i = 1; i <= 120; i++) {
       const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
       monsterData.push(axios.get(url));
-      // console.log(monsterData.push(axios.get(url)));
     }
 
     const results = await Promise.all(monsterData);
@@ -30,7 +29,7 @@ const Monster = () => {
       id: res.data.id,
       image: res.data.sprites["front_default"],
       type: res.data.types
-        .map((type: { type: { name: any } }) => type.type.name)
+        .map((type: { type: { name: string } }) => type.type.name)
         .join(", "),
     }));
     // console.log(pokemon);
