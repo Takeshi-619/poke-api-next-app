@@ -20,6 +20,7 @@ const detail = () => {
   const [pageId, setPageId] = useState(detailId);
   const router = useRouter();
 
+  console.log(`this is  ${pageId}`);
   const [poke, setPoke] = useState<Poke[]>([]);
 
   const fetchPokemon = async () => {
@@ -46,8 +47,7 @@ const detail = () => {
   };
 
   const nextPages = async () => {
-    const page = +pageId + 1;
-    const pages = String(page);
+    const pages = String(+pageId + 1);
     setPageId(pages);
 
     const monsterData = [];
@@ -72,8 +72,8 @@ const detail = () => {
     setPoke(pokemon);
   };
   const backPages = async () => {
-    const page = +pageId - 1;
-    const pages = String(page);
+    if (+pageId === 1) return;
+    const pages = String(+pageId - 1);
     setPageId(pages);
 
     const monsterData = [];
@@ -97,10 +97,10 @@ const detail = () => {
     setPoke(pokemon);
   };
 
-  const pageHandler = (e: string) => {
-    console.log(e);
-    e === "b" ? backPages() : e === "c" ? nextPages() : router.push("/");
-  };
+  // const pageHandler = (e: string) => {
+  //   console.log(e);
+  //   e === "b" ? backPages() : e === "c" ? nextPages() : router.push("/");
+  // };
 
   useEffect(() => {
     fetchPokemon();
@@ -161,20 +161,20 @@ const detail = () => {
       <div className="details_footer">
         <button
           className="details_footer_topBtn"
-          onClick={(e) => pageHandler(e.currentTarget.value)}>
+          onClick={() => router.push("/")}>
           TOP
         </button>
         <div className="details_footer_pages">
           <button
             className="details_footer_pages_btns"
             value="b"
-            onClick={(e) => pageHandler(e.currentTarget.value)}>
+            onClick={() => backPages()}>
             PREV
           </button>
           <button
             className="details_footer_pages_btns"
             value="c"
-            onClick={(e) => pageHandler(e.currentTarget.value)}>
+            onClick={() => nextPages()}>
             NEXT
           </button>
         </div>
