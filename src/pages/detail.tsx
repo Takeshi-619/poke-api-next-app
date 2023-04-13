@@ -46,66 +46,53 @@ const detail = () => {
     setPoke(pokemon);
   };
 
+  const pageHandler = async (e: string) => {
+    console.log(e);
+    e === "b"
+      ? await backPages()
+      : e === "c"
+      ? await nextPages()
+      : router.push("/");
+  };
+
+  async function newData() {
+    const monsterData = [];
+    const url = `https://pokeapi.co/api/v2/pokemon/${pageId}`;
+    monsterData.push(axios.get(url));
+
+    const results = await Promise.all(monsterData);
+    const pokemon: Poke[] = results.map((res) => ({
+      name: res.data.name,
+      id: res.data.id,
+      image: res.data.sprites["front_default"],
+      stats: res.data.stats.map((item: any) => item.stat.name),
+      base_stats: res.data.stats.map((i: { base_stat: string }) => i.base_stat),
+      ability: res.data.abilities
+        .map((ability: any) => ability.ability.name)
+        .join(", "),
+      type: res.data.types
+        .map((type: { type: { name: string } }) => type.type.name)
+        .join(", "),
+    }));
+    setPoke(pokemon);
+  }
+
   const nextPages = async () => {
     const pages = String(+pageId + 1);
     setPageId(pages);
-
-    const monsterData = [];
-    const url = `https://pokeapi.co/api/v2/pokemon/${pageId}`;
-    monsterData.push(axios.get(url));
-    console.log(monsterData);
-
-    const results = await Promise.all(monsterData);
-    const pokemon: Poke[] = results.map((res) => ({
-      name: res.data.name,
-      id: res.data.id,
-      image: res.data.sprites["front_default"],
-      stats: res.data.stats.map((item: any) => item.stat.name),
-      base_stats: res.data.stats.map((i: { base_stat: string }) => i.base_stat),
-      ability: res.data.abilities
-        .map((ability: any) => ability.ability.name)
-        .join(", "),
-      type: res.data.types
-        .map((type: { type: { name: string } }) => type.type.name)
-        .join(", "),
-    }));
-    setPoke(pokemon);
   };
-  const backPages = async () => {
+  const backPages = () => {
     if (+pageId === 1) return;
     const pages = String(+pageId - 1);
     setPageId(pages);
-
-    const monsterData = [];
-    const url = `https://pokeapi.co/api/v2/pokemon/${pageId}`;
-    monsterData.push(axios.get(url));
-
-    const results = await Promise.all(monsterData);
-    const pokemon: Poke[] = results.map((res) => ({
-      name: res.data.name,
-      id: res.data.id,
-      image: res.data.sprites["front_default"],
-      stats: res.data.stats.map((item: any) => item.stat.name),
-      base_stats: res.data.stats.map((i: { base_stat: string }) => i.base_stat),
-      ability: res.data.abilities
-        .map((ability: any) => ability.ability.name)
-        .join(", "),
-      type: res.data.types
-        .map((type: { type: { name: string } }) => type.type.name)
-        .join(", "),
-    }));
-    setPoke(pokemon);
   };
-
-  // const pageHandler = (e: string) => {
-  //   console.log(e);
-  //   e === "b" ? backPages() : e === "c" ? nextPages() : router.push("/");
-  // };
 
   useEffect(() => {
     fetchPokemon();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {
+    newData();
+  }, [pageId]);
   return (
     <div className="details">
       {poke &&
@@ -161,20 +148,20 @@ const detail = () => {
       <div className="details_footer">
         <button
           className="details_footer_topBtn"
-          onClick={() => router.push("/")}>
+          onClick={(e) => pageHandler(e.currentTarget.value)}>
           TOP
         </button>
         <div className="details_footer_pages">
           <button
             className="details_footer_pages_btns"
             value="b"
-            onClick={() => backPages()}>
+            onClick={(e) => pageHandler(e.currentTarget.value)}>
             PREV
           </button>
           <button
             className="details_footer_pages_btns"
             value="c"
-            onClick={() => nextPages()}>
+            onClick={(e) => pageHandler(e.currentTarget.value)}>
             NEXT
           </button>
         </div>
